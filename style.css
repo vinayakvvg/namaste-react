@@ -76,3 +76,19 @@ h6 {
 .res-logo {
   width: 190px;
 }
+
+.shimmer-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.shimmer-card {
+  width: 200px;
+  height: 300px;
+  margin: 5px;
+  background-color: #f0f0f0;
+}
+
+.login-btn {
+  cursor: pointer;
+}
