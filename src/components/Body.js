@@ -3,6 +3,7 @@ import RestaurantCard from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 
 import { CORS_PROXY, SWIGGY_API } from "../utils/constants";
+import { Link } from "react-router";
 
 const Body = () => {
   const [listOfRes, setListOfRes] = useState([]);
@@ -29,7 +30,7 @@ const Body = () => {
     const json = await data.json();
 
     const listOfRes =
-      json?.data?.cards?.[4].card?.card?.gridElements?.infoWithStyle
+      json?.data?.cards?.[4]?.card?.card?.gridElements?.infoWithStyle
         ?.restaurants;
     setListOfRes(listOfRes);
     setFilteredRestaurant(listOfRes);
@@ -40,7 +41,7 @@ const Body = () => {
     setFilteredRestaurant(filteredList);
   };
 
-  if (filteredRestaurant.length === 0) return <Shimmer />;
+  if (filteredRestaurant?.length === 0) return <Shimmer />;
 
   return (
     <div className="body">
@@ -62,8 +63,10 @@ const Body = () => {
         />
       </div>
       <div className="res-container">
-        {filteredRestaurant.map((res) => (
-          <RestaurantCard key={res.info.id} resData={res} />
+        {filteredRestaurant?.map((res) => (
+          <Link key={res.info.id} to={"/resMenu/" + res.info.id}>
+            <RestaurantCard resData={res} />
+          </Link>
         ))}
       </div>
     </div>
