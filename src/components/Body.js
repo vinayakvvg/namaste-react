@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import RestaurantCard from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 
-import { SWIGGY_API } from "../utils/constants";
+import { CORS_PROXY, SWIGGY_API } from "../utils/constants";
 
 const Body = () => {
   const [listOfRes, setListOfRes] = useState([]);
@@ -21,7 +21,11 @@ const Body = () => {
   };
 
   const fetchRestaurantData = async () => {
-    const data = await fetch(SWIGGY_API);
+    const data = await fetch(CORS_PROXY + SWIGGY_API, {
+      headers: {
+        "x-cors-api-key": "temp_6c0c947224315c18cef7fb4d6595b810",
+      },
+    });
     const json = await data.json();
 
     const listOfRes =
