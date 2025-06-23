@@ -6,4 +6,4 @@ export const SWIGGY_API =
 export const CORS_PROXY = "https://proxy.cors.sh/";
 export const SWIGGY_RES_API =
   "https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=21.99740&lng=79.00110&restaurantId=";
-// 1003414
+export const USER_API = "https://api.github.com/users/vinayakvvg";
