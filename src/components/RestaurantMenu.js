@@ -1,26 +1,11 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { CORS_PROXY, SWIGGY_RES_API } from "../utils/constants";
 import Shimmer from "./Shimmer";
+import useRestaturantMenu from "../utils/hooks/useRestaurantMenu";
 
 const RestaurantMenu = () => {
-  const [resMenu, setResMenu] = useState([]);
   const { resId } = useParams();
 
-  useEffect(() => {
-    fetchMenuData();
-  }, []);
-
-  const fetchMenuData = async () => {
-    const data = await fetch(CORS_PROXY + SWIGGY_RES_API + resId, {
-      headers: {
-        "x-cors-api-key": "temp_6c0c947224315c18cef7fb4d6595b810",
-      },
-    });
-    const jsonData = await data.json();
-
-    setResMenu(jsonData?.data);
-  };
+  const resMenu = useRestaturantMenu(resId);
 
   if (resMenu.length === 0) return <Shimmer />;
 
