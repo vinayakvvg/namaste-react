@@ -54,24 +54,31 @@ const Body = () => {
 
   return (
     <div className="body">
-      <div className="search">
-        <input
-          type="text"
-          className="search-box"
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-        />
-        <button onClick={searchBtnClicked}>Search</button>
+      <div className="flex">
+        <div className="p-4 m-4">
+          <input
+            type="text"
+            className="border border-solid border-black "
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+          <button
+            className="px-4 py-2 bg-green-100 m-4 rounded-lg"
+            onClick={searchBtnClicked}
+          >
+            Search
+          </button>
+        </div>
+        <div className="flex items-center">
+          <input
+            type="button"
+            className="px-4 py-2 bg-gray-200 rounded-lg cursor-pointer"
+            value="Top Rated Restaurants"
+            onClick={(e) => filterRestaurants(e)}
+          />
+        </div>
       </div>
-      <div className="filter">
-        <input
-          type="button"
-          className="filter-btn"
-          value="Top Rated Restaurants"
-          onClick={(e) => filterRestaurants(e)}
-        />
-      </div>
-      <div className="res-container">
+      <div className="flex flex-wrap">
         {filteredRestaurant?.map((res) => (
           <Link key={res.info.id} to={"/resMenu/" + res.info.id}>
             <RestaurantCard resData={res} />
