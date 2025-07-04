@@ -1,35 +1,43 @@
 import { useParams } from "react-router";
 import Shimmer from "./Shimmer";
 import useRestaturantMenu from "../utils/hooks/useRestaurantMenu";
+import RestaurantCategory from "./RestaurantCategory";
+import { useState } from "react";
 
 const RestaurantMenu = () => {
   const { resId } = useParams();
+  const [showAccordion, setShowAccordion] = useState(-1);
 
   const resMenu = useRestaturantMenu(resId);
+  const resType =
+    "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory";
 
   if (resMenu.length === 0) return <Shimmer />;
 
   const { text: resName } = resMenu?.cards[0]?.card?.card;
+
   const menuItems =
-    resMenu?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards.slice(1, 3);
+    resMenu?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(
+      (c) => c?.card?.card?.["@type"] === resType
+    );
+
+  const openCatgory = (index) => {
+    let toggle = showAccordion == index ? -1 : index;
+    setShowAccordion(toggle);
+  };
 
   return (
     <div>
-      <h1 className="font-bold text-xl m-4">{resName}</h1>
-      {menuItems.map((heading) => {
+      <h1 className="flex font-bold text-xl my-4 mx-auto w-6/12">{resName}</h1>
+      {menuItems.map((category, index) => {
         return (
-          <div key={heading?.card?.card?.categoryId} className="m-4 p-4 bg-gray-100">
-            <div className="m-2 p-2 bg-orange-200 text-gray-600">{heading?.card?.card.title}</div>
-            {heading?.card?.card?.itemCards?.map((item) => {
-              const resInfo = item?.card?.info;
-              return (
-                <div key={resInfo.id} className="m-4 justify-evenly ">
-                  {resInfo.name} - Rs{" "}
-                  {(resInfo.defaultPrice ?? resInfo.price) / 100}
-                </div>
-              );
-            })}
-          </div>
+          <RestaurantCategory
+            key={category?.card?.card?.categoryId}
+            categoryData={category}
+            showItems={index == showAccordion}
+            index={index}
+            openCatgory={openCatgory}
+          />
         );
       })}
     </div>

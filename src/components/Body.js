@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
-import RestaurantCard from "./RestaurantCard";
+import { useContext, useEffect, useState } from "react";
+import RestaurantCard, { withPromotedLabel } from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 
 import { CORS_PROXY, SWIGGY_API } from "../utils/constants";
 import { Link } from "react-router";
 import useOnlineStatus from "../utils/hooks/useOnlineStatus";
+import UserContext from "../utils/contexts/UserContext";
+
+const PromotedRestaurantCard = withPromotedLabel(RestaurantCard);
 
 const Body = () => {
   const [listOfRes, setListOfRes] = useState([]);
   const [filteredRestaurant, setFilteredRestaurant] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const { user_name, setUserName } = useContext(UserContext);
 
   useEffect(() => {
     fetchRestaurantData();
@@ -33,6 +37,7 @@ const Body = () => {
     const listOfRes =
       json?.data?.cards?.[4]?.card?.card?.gridElements?.infoWithStyle
         ?.restaurants;
+
     setListOfRes(listOfRes);
     setFilteredRestaurant(listOfRes);
   };
@@ -77,11 +82,25 @@ const Body = () => {
             onClick={(e) => filterRestaurants(e)}
           />
         </div>
+        <div className="flex items-center mx-2">
+          <label>User Name :</label>
+          <input
+            type="text"
+            id="user-name-input"
+            className="px-4 py-2 mx-2 border border-solid border-black"
+            value={user_name}
+            onChange={(e) => setUserName(e.target.value)}
+          />
+        </div>
       </div>
       <div className="flex flex-wrap">
         {filteredRestaurant?.map((res) => (
           <Link key={res.info.id} to={"/resMenu/" + res.info.id}>
-            <RestaurantCard resData={res} />
+            {res.info.avgRating > 4 ? (
+              <RestaurantCard resData={res} />
+            ) : (
+              <PromotedRestaurantCard resData={res} />
+            )}
           </Link>
         ))}
       </div>
