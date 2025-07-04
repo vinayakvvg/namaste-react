@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { LOGO_URL } from "../utils/constants";
 import { Link } from "react-router";
 import useOnlineStatus from "../utils/hooks/useOnlineStatus";
+import UserContext from "../utils/contexts/UserContext";
 
 const Header = () => {
   const [loginValue, setLoginValue] = useState("Login");
@@ -11,6 +12,8 @@ const Header = () => {
     const newValue = loginValue == "Login" ? "Logout" : "Login";
     setLoginValue(newValue);
   };
+
+  const { user_name } = useContext(UserContext);
 
   return (
     <div className="flex justify-between bg-pink-50 shadow-md">
@@ -36,7 +39,7 @@ const Header = () => {
             <Link>Cart</Link>
           </li>
           <button className="login-btn" onClick={loginBtnClicked}>
-            {loginValue}
+            {user_name}
           </button>
         </ul>
       </div>

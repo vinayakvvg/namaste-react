@@ -15,4 +15,15 @@ const RestaurantCard = ({ resData }) => {
   );
 };
 
+export const withPromotedLabel = (RestaurantCard) => {
+  return (props) => {
+    return (
+      <div>
+        <div className="absolute bg-black text-white m-4 px-2 rounded-lg">Promoted</div>
+        <RestaurantCard resData={props.resData} />
+      </div>
+    );
+  };
+};
+
 export default RestaurantCard;
